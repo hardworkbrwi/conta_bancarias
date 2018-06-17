@@ -18,7 +18,7 @@ std::istream& operator>> (std::istream &i, Data &d){
     }while( d.m_dia < 1 || d.m_dia > 31 );
 
     do{
-        std::cout << "Entre com o dia (1 - 12): ";
+        std::cout << "Entre com o mês (1 - 12): ";
         i >> d.m_mes;
         i.ignore();
         if( d.m_mes < 1 || d.m_mes > 12 )

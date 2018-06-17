@@ -144,7 +144,7 @@ std::ostream& operator<<( std::ostream&, ListaLigada<T> const & );
 */
 template <typename T>
 class ListaLigada {
-protected:
+public:
 	shared_ptr<Node<T>> cabeca; /**< define a sentinela cabeca que aponta para o inicio da lista*/
 	shared_ptr<Node<T>> cauda; /**< define a sentinela cauda que aponta para o fim da lista */
 	int tamanho; /**< define o tamanho da lista */

@@ -9,20 +9,33 @@ using std::endl;
 using std::string;
 
 #include "data.h"
+#include "lista.h"
+#include "conta.h"
 
 class Movimentacao{
     private:
-        string tipo;
-        Data dataTransacao;        
-
+        int tipo;
+        double valor;  
+        Data dataTransacao;
+        /* 
+        void saque( Conta& );
+        void deposito( Conta& );
+ */
     public:
-        Movimentacao( string tipo );
+        Movimentacao( int tipo, double valor );
+        Movimentacao( Movimentacao& );
         ~Movimentacao();
-/*
-        virtual void saque( double ) = 0;
-        virtual void transferencia( string, string, double ) = 0;
-        virtual void deposito( string, string, double ) = 0;
-*/
+
+        //string operacao( Conta& conta, int tipo );
+
+        
+        //void transferencia( Conta&, string, string, double );
+
+        int getTipo();
+        double getValor();
+        Data getData();
+        
+
         friend std::ostream& operator<< (std::ostream &o, Movimentacao const mov);
 
 

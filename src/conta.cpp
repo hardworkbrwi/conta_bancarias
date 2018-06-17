@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 using std::string;
-#include "conta.h"
 #include "lista.h"
-
+#include "movimentacao.h"
+#include "conta.h"
 
 
 Conta::Conta( string agencia, string operacao, string titular, double limite ):
@@ -13,8 +13,6 @@ Conta::Conta( string agencia, string operacao, string titular, double limite ):
             operacao( operacao ),
             limite( limite ){
                 Conta::contDeConta++;
-                //this->conta = numeroToString( contDeConta );
-                //this->conta = itos( Conta::contDeConta );
                 this->conta = std::to_string(contDeConta);
 }
 
@@ -32,12 +30,29 @@ Conta::Conta( Conta& c ){
 
 Conta::~Conta(){}
 
-/*
-void saque( double );
-void transferencia( string, string, double );
-void deposito( string, string, double );
-*/
 
+void Conta::saque( double valor ){
+    movimentacao op;
+    op.tipo = 1;
+    op.valor = valor;
+    cin >> op.dataTransacao;
+    //movimentacoes.InsereNoFinal( op );
+    movimentacoes.push_back( op );
+    this->saldo -= valor;
+
+}
+
+void Conta::transferencia( double ){}
+
+void Conta::deposito( double valor ){
+    movimentacao op;
+    op.tipo = 2;
+    op.valor = valor;
+    cin >> op.dataTransacao;
+    //movimentacoes.InsereNoFinal( op );
+    movimentacoes.push_back( op );
+    this->saldo += valor;
+}
 
 string Conta::getAgencia(){
     return agencia;
@@ -86,8 +101,12 @@ double Conta::getLimite(){
 void Conta::setLimite( double limite ){
     this->limite = limite;
 }
-
-ListaLigada<Movimentacao> Conta::getMovimentacao(){
+/* 
+ListaLigada<movimentacao> Conta::getMovimentacao(){
+    return movimentacoes;
+}
+ */
+vector<movimentacao> Conta::getMovimentacao(){
     return movimentacoes;
 }
 

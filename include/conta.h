@@ -4,10 +4,18 @@
 #include <iostream>
 #include <string>
 using std::string;
-using std::stringstream;
-#include "conta.h"
+#include <vector>
+using std::vector;
 #include "lista.h"
 #include "movimentacao.h"
+#include "conta.h"
+#include "data.h"
+
+typedef struct{
+    int tipo;
+    double valor;
+    Data dataTransacao;
+}movimentacao;
 
 class Conta{
     private:
@@ -18,7 +26,8 @@ class Conta{
         double saldo; /**< Informa os saldo da conta */
         string operacao; /**< Informa a qual operação esta conta está relacionada (corrente, poupança, etc) */
         double limite; /**< Informa o limite total da conta */
-        ListaLigada<Movimentacao> movimentacoes;
+        //ListaLigada<movimentacao> movimentacoes;
+        vector<movimentacao> movimentacoes;
         //Saldo, extrato, saque, transferência, deposito
 
     public:
@@ -27,11 +36,9 @@ class Conta{
         Conta( Conta & );
         ~Conta();
 
-        /*
         void saque( double );
-        void transferencia( string, string, double );
-        void deposito( string, string, double );
-        */
+        void transferencia( double );
+        void deposito( double );
         
         int getContDeConta();
 
@@ -53,7 +60,9 @@ class Conta{
         double getLimite();
         void setLimite( double );
 
-        ListaLigada<Movimentacao> getMovimentacao();
+        //ListaLigada<movimentacao> getMovimentacao();
+        vector<movimentacao> getMovimentacao();
+        
 
         friend std::ostream& operator<< (std::ostream &o, Conta const c);
 
