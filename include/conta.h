@@ -37,7 +37,7 @@ class Conta{
         ~Conta();
 
         void saque( double );
-        void transferencia( double );
+        void transferencia( Conta&, double );
         void deposito( double );
         
         int getContDeConta();
@@ -61,10 +61,11 @@ class Conta{
         void setLimite( double );
 
         //ListaLigada<movimentacao> getMovimentacao();
-        vector<movimentacao> getMovimentacao();
-        
+        vector<movimentacao> getMovimentacao();        
 
         friend std::ostream& operator<< (std::ostream &o, Conta const c);
+
+        friend bool operator== (Conta& a, Conta& b);
 
         
 };
