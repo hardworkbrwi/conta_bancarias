@@ -32,6 +32,8 @@ Conta::~Conta(){}
 
 
 void Conta::saque( double valor ){
+    cout << "###### SAQUE ######" << endl;
+    cout << "Valor: " << valor << endl;
     movimentacao op;
     op.tipo = 1;
     op.valor = valor;
@@ -39,10 +41,14 @@ void Conta::saque( double valor ){
     //movimentacoes.InsereNoFinal( op );
     movimentacoes.push_back( op );
     this->saldo -= valor;
+    cout << "###### SAQUE EFETUADO COM SUCESSO ######" << endl;
 
 }
 
 void Conta::transferencia( Conta& contaB, double valor ){
+    cout << "###### TRANSFERÊNCIA ######" << endl;
+    cout << "Valor: " << valor << endl;
+    cout << contaB << endl;
     movimentacao op;
     op.tipo = 3;
     op.valor = valor;
@@ -52,9 +58,12 @@ void Conta::transferencia( Conta& contaB, double valor ){
     contaB.movimentacoes.push_back( op );
     this->saldo -= valor;
     contaB.setSaldo( contaB.getSaldo() + valor );
+    cout << "###### TRANSFERÊNCIA EFETUADA COM SUCESSO ######" << endl;
 }
 
 void Conta::deposito( double valor ){
+    cout << "###### DEPÓSITO ######" << endl;
+    cout << "Valor: " << valor << endl;
     movimentacao op;
     op.tipo = 2;
     op.valor = valor;
@@ -62,6 +71,7 @@ void Conta::deposito( double valor ){
     //movimentacoes.InsereNoFinal( op );
     movimentacoes.push_back( op );
     this->saldo += valor;
+    cout << "###### DEPÓSITO EFETUADO COM SUCESSO ######" << endl;
 }
 
 string Conta::getAgencia(){
