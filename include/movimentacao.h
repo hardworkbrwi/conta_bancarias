@@ -7,38 +7,35 @@ using std::cout;
 using std::endl;
 #include <string>
 using std::string;
-
+#include <memory>
+using std::shared_ptr;
+ 
 #include "data.h"
+/*
 #include "lista.h"
 #include "conta.h"
-
+#include "excecoes.h"
+ */
 class Movimentacao{
     private:
-        int tipo;
-        double valor;  
-        Data dataTransacao;
-        /* 
-        void saque( Conta& );
-        void deposito( Conta& );
- */
+        string tipo;
+        string valor;
+        shared_ptr<Data> dataTransacao;
+       
     public:
-        Movimentacao( int tipo, double valor );
+        Movimentacao();
+        //Movimentacao( int tipo, double valor );
         Movimentacao( Movimentacao& );
         ~Movimentacao();
 
-        //string operacao( Conta& conta, int tipo );
-
+        string getTipo();
+        void setTipo( string );
+        string getValor();
+        void setValor( string );
+        shared_ptr<Data> getData();
+        void setData( shared_ptr<Data> );
         
-        //void transferencia( Conta&, string, string, double );
-
-        int getTipo();
-        double getValor();
-        Data getData();
-        
-
         friend std::ostream& operator<< (std::ostream &o, Movimentacao const mov);
-
-
 };
 
 #endif

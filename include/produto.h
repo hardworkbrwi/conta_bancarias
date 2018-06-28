@@ -11,6 +11,8 @@
 
 #include <iostream>
 
+namespace lojinha{
+
 class Produto{
 public:
 	/**
@@ -133,5 +135,7 @@ private:
 	*/
 	virtual std::ostream& print( std::ostream& ) const = 0;
 };
+
+}
  
 #endif

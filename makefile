@@ -57,27 +57,53 @@ all: diretorios linux
 diretorios:
 	$(MKDIR_P) $(DIR_CRT)
 
-linux: #libs .a e .so para gerar bibliotecas para o linux mathbasic.a mathbasic.so prog_estatico prog_dinamico
+#libs .a e .so para gerar bibliotecas para o linux mathbasic.a mathbasic.so prog_estatico prog_dinamico
+linux: cbancaria.a cbancaria.so lojinha.a lojinha.so loja_virtual_estatico loja_virtual_dinamico
 
 windows: #libs .lib e .dll para gerar bibliotecas do windows
 
 # LINUX
 
-mathbasic.a: $(SRC)/mathbasic.cpp $(INC)/mathbasic.h
-	$(CC) $(CPPFLAGS) -c $(SRC)/mathbasic.cpp -o $(OBJ)/mathbasic.o
-	$(AR) rcs $(LIB)/$@ $(OBJ)/mathbasic.o
+data.a: $(SRC)/data.cpp $(INC)/data.h
+	$(CC) $(CPPFLAGS) -c $(SRC)/data.cpp -o $(OBJ)data.o
+	$(AR) rsc $(LIB)/$@ $(OBJ)/data.o
+	@echo "+++ [Biblioteca estática criada em $(LIB)/$@] +++"
+	@echo ""
+
+data.so: $(SRC)/data.cpp $(INC)/data.h
+	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/data.cpp -o $(OBJ)data.o
+	$(CC) -shared -fPIC -o $(LIB)/$@ $(OBJ)/data.o
+	@echo "+++ [Biblioteca dinâmica criada em $(LIB)/$@] +++"
+	@echo ""
+
+cbancaria.a: $(SRC)/conta.cpp $(INC)/conta.h
+	$(CC) $(CPPFLAGS) -c $(SRC)/conta.cpp -o $(OBJ)/conta.o
+	$(AR) rcs $(LIB)/$@ $(OBJ)/data.o $(OBJ)/conta.o
 	@echo "+++ [Biblioteca estática criada em $(LIB)/$@] +++"
 
-mathbasic.so: $(SRC)/mathbasic.cpp $(INC)/mathbasic.h
-	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/mathbasic.cpp -o $(OBJ)/mathbasic.o
-	$(CC) -shared -fPIC -o $(LIB)/$@ $(OBJ)/mathbasic.o
+cbancaria.so: $(SRC)/conta.cpp $(SRC)/data.cpp $(INC)/conta.h $(INC)/data.h
+	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/data.cpp -o $(OBJ)/data.o
+	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/conta.cpp -o $(OBJ)/conta.o
+	$(CC) -shared -fPIC -o $(LIB)/$@ $(OBJ)/data.o $(OBJ)/conta.o
 	@echo "+++ [Biblioteca dinâmica criada em $(LIB)/$@] +++"
 
-prog_estatico:
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp $(LIB)/mathbasic.a -o $(BIN)/$@
+lojinha.a: $(SRC)/produto.cpp $(SRC)/fruta.cpp $(INC)/produto.h $(INC)/fruta.h
+	$(CC) $(CPPFLAGS) -c $(SRC)/fruta.cpp -o $(OBJ)/fruta.o
+	$(CC) $(CPPFLAGS) -c $(SRC)/produto.cpp -o $(OBJ)/produto.o
+	$(AR) rcs $(LIB)/$@ $(OBJ)/produto.o $(OBJ)/fruta.o
+	@echo "+++ [Biblioteca estática criada em $(LIB)/$@] +++"
+
+lojinha.so: $(SRC)/produto.cpp $(SRC)/fruta.cpp $(INC)/produto.h $(INC)/fruta.h
+	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/fruta.cpp -o $(OBJ)/fruta.o
+	$(CC) $(CPPFLAGS) -fPIC -c $(SRC)/produto.cpp -o $(OBJ)/produto.o
+	$(CC) -shared -fPIC -o $(LIB)/$@ $(OBJ)/produto.o $(OBJ)/fruta.o
+	@echo "+++ [Biblioteca dinâmica criada em $(LIB)/$@] +++"
+
+loja_virtual_estatico:
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp $(LIB)/cbancaria.a $(LIB)/lojinha.a -o $(BIN)/$@
 
 prog_dinamico:
-	$(CC) $(CPPFLAGS) $(SRC)/main.cpp $(LIB)/mathbasic.so -o $(BIN)/$@
+	$(CC) $(CPPFLAGS) $(SRC)/main.cpp $(LIB)/cbancaria.so $(LIB)/lojinha.so -o $(BIN)/$@
 
 #########
 

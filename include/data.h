@@ -5,15 +5,19 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+using std::string;
 #include <cstring>
+#include <iomanip>
 
 //Classe Data
 //Define os atributos e métodos de uma Data
 class Data{
     private:
-        int m_dia;
-        int m_mes;
-        int m_ano;
+        int dia, mes, ano, horas, minutos, segundos, diaSemana;
+        string mesExtenso[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+        string diaExtenso[7] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        
+        void capturaTempo( int &dia, int &mes, int &ano, int &horas, int &minutos, int &segundos, int &diaSemana );
 
     public:
         //Construtor padrão da classe Data
@@ -37,6 +41,8 @@ class Data{
         //Retorna a data pro extenso em formato string
         std::string DataPorExtenso();        
 
+        void imprimeData();
+
         //Sessão de Encapsulamento
         //Coleção de métodos get e set da classe Funcionario
 
@@ -49,5 +55,20 @@ class Data{
         //Encapsulamento do atributo m_ano
         int getAno();
         void setAno(int ano);
+
+        int getHoras();
+        void setHoras(int horas);
+
+        int getMinutos();
+        void setMinutos(int minutos);
+
+        int getSegundos();
+        void setSegundos(int segundos);
+
+        int getDiaSemana();
+        void setDiaSemana(int diaSemana);
+
+        string getMesExtenso(int mes);
+        string getDiaExtenso(int dia);
 };
 #endif

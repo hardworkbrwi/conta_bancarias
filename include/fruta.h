@@ -11,6 +11,8 @@
 
 #include "produto.h"
 
+namespace lojinha{
+
 /**
 * @brief Classe Fruta, derivada de Produto
 */  
@@ -80,5 +82,7 @@ private:
 	*/
 	std::ostream& print( std::ostream &o ) const;
 };
+
+}
 
 #endif

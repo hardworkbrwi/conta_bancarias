@@ -4,12 +4,12 @@
 #include <iostream>
 #include <string>
 using std::string;
-#include <vector>
-using std::vector;
+//#include <vector>
+//using std::vector;
 #include "lista.h"
-#include "movimentacao.h"
 #include "conta.h"
 #include "data.h"
+#include "movimentacao.h"
 
 typedef struct{
     int tipo;
@@ -22,23 +22,25 @@ class Conta{
         static int contDeConta;
         string agencia; /**< Descreve codigo da agência da conta */
         string conta; /**< Descreve codigo da conta */
-        string titular;
+        string titular; /**< Define o titular da conta */
         double saldo; /**< Informa os saldo da conta */
-        string operacao; /**< Informa a qual operação esta conta está relacionada (corrente, poupança, etc) */
+        int operacao; /**< Informa a qual operação esta conta está relacionada (corrente, poupança, etc) */
         double limite; /**< Informa o limite total da conta */
-        //ListaLigada<movimentacao> movimentacoes;
-        vector<movimentacao> movimentacoes;
-        //Saldo, extrato, saque, transferência, deposito
+        ListaLigada<Movimentacao> movimentacoes; /**< Lista de movimentações realizadas */
+        //vector<movimentacao> movimentacoes;
+        
 
     public:
-        Conta( string agencia, string operacao, string titular, double limite );
+        string tiposContas[3] = {"Conta Corrente", "Conta Poupança", "Conta Salário"};
+        Conta( string agencia, int operacao, string titular, double limite );
         Conta();
         Conta( Conta & );
         ~Conta();
 
-        void saque( double );
-        void transferencia( Conta&, double );
-        void deposito( double );
+        string converteOperacao( int op );
+
+        void aumentaLimite( double );
+        void diminuiLimite( double );
         
         int getContDeConta();
 
@@ -54,22 +56,20 @@ class Conta{
         double getSaldo();
         void setSaldo( double );
 
-        string getOperacao();
-        void setOperacao( string );
+        int getOperacao();
+        void setOperacao( int );
 
         double getLimite();
         void setLimite( double );
 
         //ListaLigada<movimentacao> getMovimentacao();
-        vector<movimentacao> getMovimentacao();        
+        ListaLigada<movimentacao> getMovimentacao();
+        void setMovimentacao( Movimentacao );       
 
         friend std::ostream& operator<< (std::ostream &o, Conta const c);
 
         friend bool operator== (Conta& a, Conta& b);
-
         
 };
-
-
 
 #endif

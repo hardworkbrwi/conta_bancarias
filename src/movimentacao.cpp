@@ -1,60 +1,42 @@
 #include "movimentacao.h"
 
-Movimentacao::Movimentacao( int tipo, double valor ): tipo( tipo ), valor( valor ){
-    cin >> dataTransacao;
-    
+Movimentacao::Movimentacao(){}
+
+Movimentacao::Movimentacao( Movimentacao& moviment){
+    this->tipo = moviment.getTipo();
+    this->valor = moviment.getValor();
+    this->dataTransacao = moviment.getData();
 }
 
-Movimentacao::Movimentacao( Movimentacao& mov){
-    this->tipo = mov.getTipo();
-    this->valor = mov.getValor();
-    this->dataTransacao = mov.getData();
-}
-
-Movimentacao::~Movimentacao(){}
-/* 
-void Movimentacao::saque( Conta& conta ){
-    conta.setSaldo( conta.getSaldo() - valor );
-}
-
-
-void Movimentacao::transferencia( string, string, double ){}
-
-void Movimentacao::deposito( Conta& conta ){
-    conta.setSaldo( conta.getSaldo() + valor );
-}
-
-string Movimentacao::operacao (Conta& conta, int tipo ){
-    string msg;
-    switch(tipo){
-        case 1:
-            saque( conta );
-            msg = "O saque de "  + std::to_string( valor ) + " foi efetuado com sucesso.";
-            break;
-        case 2:
-            deposito( conta );
-            msg = "O deposito de "  + std::to_string( valor ) + " foi efetuado com sucesso.";
-            break;
-    }
-
-    return msg;
-}
-*/
-
-int Movimentacao::getTipo(){
+string Movimentacao::getTipo(){
     return tipo;
 }
 
-double Movimentacao::getValor(){
+void Movimentacao::setTipo( string tipo ){
+    this->tipo = tipo;
+}
+
+string Movimentacao::getValor(){
     return valor;
 }
 
-Data Movimentacao::getData(){
+void Movimentacao::setValor( string valor ){
+    this->valor = valor;
+}
+
+shared_ptr<Data> Movimentacao::getData(){
     return dataTransacao;
 }
 
-std::ostream& operator<< (std::ostream &o, Movimentacao const mov){
-    o << "Tipo:              " << mov.tipo << endl <<
-         "Data da Transação: " << mov.dataTransacao << endl;
+void Movimentacao::setData( shared_ptr<Data> data ){
+    this->dataTransacao = data;
+
+}
+Movimentacao::~Movimentacao(){}
+std::ostream& operator<< (std::ostream &o, Movimentacao const moviment){
+    o << "Tipo: " << moviment.tipo << endl <<
+         "Valor: R$ " << moviment.valor << endl <<
+         "Data da Transação: " /*<< moviment.dataTransacao */<< endl;
+         moviment.dataTransacao->imprimeData();
     return o;
 }

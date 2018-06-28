@@ -14,56 +14,60 @@
 #include <iostream>
 #include "produto.h"
 
-Produto::Produto(){}
+namespace lojinha{
 
-Produto::~Produto(){}
+	Produto::Produto(){}
 
-Produto::Produto( int tag, std::string codigo, std::string descricao, short preco ):
-	tag( tag ), cod_barras( codigo ), descricao( descricao ), preco( preco ) {}
+	Produto::~Produto(){}
 
-int Produto::getTag(){
-	return tag;
-}
+	Produto::Produto( int tag, std::string codigo, std::string descricao, short preco ):
+		tag( tag ), cod_barras( codigo ), descricao( descricao ), preco( preco ) {}
 
-std::string Produto::getCodBarras() {
-	return cod_barras;
-}
-	
-std::string Produto::getDescricao() {
-	return descricao;
-}
+	int Produto::getTag(){
+		return tag;
+	}
 
-double Produto::getPreco() {
-	return preco;
-}
-	
-void Produto::setCodBarras( std::string codigo ) {
-	cod_barras = codigo;
-}
+	std::string Produto::getCodBarras() {
+		return cod_barras;
+	}
+		
+	std::string Produto::getDescricao() {
+		return descricao;
+	}
 
-void Produto::setDescricao( std::string descricao ) {
-	this->descricao = descricao;
-}
+	double Produto::getPreco() {
+		return preco;
+	}
+		
+	void Produto::setCodBarras( std::string codigo ) {
+		cod_barras = codigo;
+	}
 
-void Produto::setPreco( double preco ) {
-	this->preco = preco;
-}
+	void Produto::setDescricao( std::string descricao ) {
+		this->descricao = descricao;
+	}
 
-double operator+ ( Produto &a, Produto &b ){
-	return a.getPreco() + b.getPreco();
-}
+	void Produto::setPreco( double preco ) {
+		this->preco = preco;
+	}
 
-double operator- ( Produto &a, Produto &b ){
-	return a.getPreco() - b.getPreco();
-}
+	double operator+ ( Produto &a, Produto &b ){
+		return a.getPreco() + b.getPreco();
+	}
 
-bool operator== (Produto &a, Produto &b){
-	if( a.getCodBarras() == b.getCodBarras() )
-		return true;
-	
-	return false;
-}
+	double operator- ( Produto &a, Produto &b ){
+		return a.getPreco() - b.getPreco();
+	}
 
-std::ostream& operator<< (std::ostream &o, Produto const &p) {
-	return p.print(o);
+	bool operator== (Produto &a, Produto &b){
+		if( a.getCodBarras() == b.getCodBarras() )
+			return true;
+		
+		return false;
+	}
+
+	std::ostream& operator<< (std::ostream &o, Produto const &p) {
+		return p.print(o);
+	}
+
 }
