@@ -11,14 +11,14 @@ using std::string;
 
 //namespace contabancaria{
 
-    Conta::Conta( string agencia, int operacao, string titular, double limite ):
+    Conta::Conta( string agencia, int tipo, string titular, double limite ):
                 agencia( agencia ),
                 titular( titular ),
                 saldo( 0 ),
-                operacao( operacao ),
+                tipo( tipo ),
                 limite( limite ){
                     Conta::contDeConta++;
-                    this->conta = std::to_string(contDeConta);
+                    this->conta = std::to_string( contDeConta );
     }
 
     Conta::Conta(){}
@@ -28,20 +28,12 @@ using std::string;
         this->conta = c.getConta();
         this->titular = c.getTitular();
         this->saldo = c.getSaldo();
-        this->operacao = c.getOperacao();
+        this->tipo = c.getTipo();
         this->limite = c.getLimite();
         this->movimentacoes = c.getMovimentacao();
     }
 
     Conta::~Conta(){}
-
-    void Conta::aumentaLimite( double valor ){
-        this->limite += valor;
-    }
-
-    void Conta::diminuiLimite( double valor ){
-        this->limite -= valor;
-    }
 
     string Conta::converteOperacao( int op ){
         switch( op ){
@@ -60,53 +52,31 @@ using std::string;
         }
     }
 
-    /* 
-    void Conta::saque( double valor ){
-        cout << "###### SAQUE ######" << endl;
-        cout << "Valor: " << valor << endl;
-        try{
-            
-        }
-        movimentacao op;
-        op.tipo = 1;
-        op.valor = valor;
-        cin >> op.dataTransacao;
-        //movimentacoes.InsereNoFinal( op );
-        movimentacoes.push_back( op );
-        this->saldo -= valor;
-        cout << "###### SAQUE EFETUADO COM SUCESSO ######" << endl;
-
+    void Conta::aumentaLimite( double valor ){
+        this->limite += valor;
     }
 
-    void Conta::transferencia( Conta& contaB, double valor ){
-        cout << "###### TRANSFERÊNCIA ######" << endl;
-        cout << "Valor: " << valor << endl;
-        cout << contaB << endl;
-        movimentacao op;
-        op.tipo = 3;
-        op.valor = valor;
-        cin >> op.dataTransacao;
-        //movimentacoes.InsereNoFinal( op );
-        this->movimentacoes.push_back( op );
-        contaB.movimentacoes.push_back( op );
-        this->saldo -= valor;
-        contaB.setSaldo( contaB.getSaldo() + valor );
-        cout << "###### TRANSFERÊNCIA EFETUADA COM SUCESSO ######" << endl;
+    void Conta::diminuiLimite( double valor ){
+        this->limite -= valor;
     }
 
-    void Conta::deposito( double valor ){
-        cout << "###### DEPÓSITO ######" << endl;
-        cout << "Valor: " << valor << endl;
-        movimentacao op;
-        op.tipo = 2;
-        op.valor = valor;
-        cin >> op.dataTransacao;
-        //movimentacoes.InsereNoFinal( op );
-        movimentacoes.push_back( op );
-        this->saldo += valor;
-        cout << "###### DEPÓSITO EFETUADO COM SUCESSO ######" << endl;
+    void Conta::adicionarMovimentacao( Movimentacao mov ){
+        this->movimentacoes.insereNoInicio( mov );
     }
- */
+
+    void Conta::exibirExtrato( int periodo = 5 ){
+        Data d;
+        int dataPeriodo = ( d.getDia() - periodo ) % 30;
+        //(diaAtual - periodo)mod30
+        for(int i = 0; i < this->movimentacoes.getTamanho(); i++){
+            Movimentacao mov;
+            mov = this->movimentacoes.getElemento(i);
+            if( mov.getData()->getDia() >= dataPeriodo ){
+                cout << mov << endl;
+            }
+        }        
+    }
+
     string Conta::getAgencia(){
         return agencia;
     }
@@ -139,12 +109,12 @@ using std::string;
         this->saldo = saldo;
     }
 
-    int Conta::getOperacao(){
-        return operacao;
+    int Conta::getTipo(){
+        return tipo;
     }
 
-    void Conta::setOperacao( int operacao ){
-        this->operacao = operacao;
+    void Conta::setTipo( int tipo ){
+        this->tipo = tipo;
     }
 
     double Conta::getLimite(){
@@ -154,34 +124,29 @@ using std::string;
     void Conta::setLimite( double limite ){
         this->limite = limite;
     }
-    /* 
-    ListaLigada<movimentacao> Conta::getMovimentacao(){
-        return movimentacoes;
-    }
-    */
-    ListaLigada<movimentacao> Conta::getMovimentacao(){
+    
+    ListaLigada<Movimentacao> Conta::getMovimentacao(){
         return movimentacoes;
     }
 
-    void Conta::setMovimentacao( Movimentacao mov ){
-        movimentacaoes.insereNoFinal( mov );
+    void Conta::setMovimentacao( ListaLigada<Movimentacao> mov ){
+        this->movimentacoes = mov;
     }
 
-    bool operator== (Conta& a, Conta& b){
+    bool operator== ( Conta& a, Conta& b ){
         if( a.getAgencia() == b.getAgencia() && a.getConta() == b.getConta() )
             return true;
 
         return false;
     }
 
-    std::ostream& operator<< (std::ostream &o, Conta const c){
-        o << "###### INFORMAÇÕES DA CONTA ######" << endl
+    std::ostream& operator<< ( std::ostream &o, Conta const c ){
+        o << endl << "###### INFORMAÇÕES DA CONTA ######" << endl
         << "Agência: " << c.agencia << " | " << "Conta: " << c.conta << endl
-        << "Operaçao: " << c.tiposContas[c.operacao-1] << endl
-        << "Titular: " << c.titular << endl    
-        << "Limite: " << c.limite << endl;
-
+        << "Operaçao: " << c.tiposContas[ c.tipo-1 ] << endl
+        << "Titular: " << c.titular << endl;
+        o.precision(2);
+        o << "Limite: R$ " << std::fixed << c.limite << endl << endl;
+        
         return o;
     }
-
-//}

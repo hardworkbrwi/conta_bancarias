@@ -174,7 +174,7 @@ void Data::imprimeData(){
 int Data::getDia(){
     return dia;
 }
-void Data::setDia(int dia){
+void Data::setDia( int dia ){
     this->dia = dia;
 }
 
@@ -182,7 +182,7 @@ void Data::setDia(int dia){
 int Data::getMes(){
     return mes;
 }
-void Data::setMes(int mes){
+void Data::setMes( int mes ){
     this->mes = mes;
 }
 
@@ -190,7 +190,7 @@ void Data::setMes(int mes){
 int Data::getAno(){
     return ano;
 }
-void Data::setAno(int ano){
+void Data::setAno( int ano ){
     this->ano = ano;
 }
 
@@ -198,7 +198,7 @@ int Data::getHoras(){
     return horas;
 }
 
-void Data::setHoras(int horas){
+void Data::setHoras( int horas ){
     this->horas = horas;
 }
 
@@ -206,7 +206,7 @@ int Data::getMinutos(){
     return minutos;
 }
 
-void Data::setMinutos(int minutos){
+void Data::setMinutos( int minutos ){
     this->minutos = minutos;
 }
 
@@ -214,21 +214,21 @@ int Data::getSegundos(){
     return segundos;
 }
 
-void Data::setSegundos(int segundos){
+void Data::setSegundos( int segundos ){
     this->segundos = segundos;
 }
 
 int Data::getDiaSemana(){
     return diaSemana;
 }
-void Data::setDiaSemana(int diaSemana){
+void Data::setDiaSemana( int diaSemana ){
     this->diaSemana = diaSemana;
 }
 
-string Data::getMesExtenso(int mes){
+string Data::getMesExtenso( int mes ){
     return mesExtenso[mes];
 }
 
-string Data::getDiaExtenso(int dia){
+string Data::getDiaExtenso( int dia ){
     return diaExtenso[dia];
 }

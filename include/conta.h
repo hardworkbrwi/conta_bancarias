@@ -24,7 +24,7 @@ class Conta{
         string conta; /**< Descreve codigo da conta */
         string titular; /**< Define o titular da conta */
         double saldo; /**< Informa os saldo da conta */
-        int operacao; /**< Informa a qual operação esta conta está relacionada (corrente, poupança, etc) */
+        int tipo; /**< Informa a qual o tipo de conta está relacionada (corrente, poupança, etc) */
         double limite; /**< Informa o limite total da conta */
         ListaLigada<Movimentacao> movimentacoes; /**< Lista de movimentações realizadas */
         //vector<movimentacao> movimentacoes;
@@ -32,7 +32,7 @@ class Conta{
 
     public:
         string tiposContas[3] = {"Conta Corrente", "Conta Poupança", "Conta Salário"};
-        Conta( string agencia, int operacao, string titular, double limite );
+        Conta( string agencia, int tipo, string titular, double limite );
         Conta();
         Conta( Conta & );
         ~Conta();
@@ -41,6 +41,10 @@ class Conta{
 
         void aumentaLimite( double );
         void diminuiLimite( double );
+
+        void adicionarMovimentacao( Movimentacao mov );
+
+        void exibirExtrato( int );
         
         int getContDeConta();
 
@@ -56,20 +60,19 @@ class Conta{
         double getSaldo();
         void setSaldo( double );
 
-        int getOperacao();
-        void setOperacao( int );
+        int getTipo();
+        void setTipo( int );
 
         double getLimite();
         void setLimite( double );
 
         //ListaLigada<movimentacao> getMovimentacao();
-        ListaLigada<movimentacao> getMovimentacao();
-        void setMovimentacao( Movimentacao );       
+        ListaLigada<Movimentacao> getMovimentacao();
+        void setMovimentacao( ListaLigada<Movimentacao> );       
 
         friend std::ostream& operator<< (std::ostream &o, Conta const c);
 
         friend bool operator== (Conta& a, Conta& b);
-        
 };
 
 #endif

@@ -7,10 +7,19 @@ using std::exception;
 using std::invalid_argument;
 
 class Excecoes : public exception {
+    private:
+        std::string msgErro;
     public:
-        //Excecoes() : invalid_argument(""){}
-        const char* what(){ return ""; }
+        //Excecoes();
+        //invalid_argument( std::string msgErro );
+        const char* what(){ return "ERRO NO PROCEDIMENTO EFETUADO NA CONTA"; }
+
+        void lancaMsg( std::string msgErro ){
+            this->msgErro = msgErro;
+        }
 
 };
+
+
 
 #endif

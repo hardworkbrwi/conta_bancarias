@@ -19,19 +19,18 @@ using std::shared_ptr;
 class Movimentacao{
     private:
         string tipo;
-        string valor;
+        double valor;
         shared_ptr<Data> dataTransacao;
        
     public:
         Movimentacao();
-        //Movimentacao( int tipo, double valor );
         Movimentacao( Movimentacao& );
         ~Movimentacao();
 
         string getTipo();
         void setTipo( string );
-        string getValor();
-        void setValor( string );
+        double getValor();
+        void setValor( double );
         shared_ptr<Data> getData();
         void setData( shared_ptr<Data> );
         

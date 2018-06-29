@@ -16,11 +16,11 @@ void Movimentacao::setTipo( string tipo ){
     this->tipo = tipo;
 }
 
-string Movimentacao::getValor(){
+double Movimentacao::getValor(){
     return valor;
 }
 
-void Movimentacao::setValor( string valor ){
+void Movimentacao::setValor( double valor ){
     this->valor = valor;
 }
 
@@ -34,8 +34,9 @@ void Movimentacao::setData( shared_ptr<Data> data ){
 }
 Movimentacao::~Movimentacao(){}
 std::ostream& operator<< (std::ostream &o, Movimentacao const moviment){
-    o << "Tipo: " << moviment.tipo << endl <<
-         "Valor: R$ " << moviment.valor << endl <<
+    o << "Tipo: " << moviment.tipo << endl;
+    o.precision( 2 );
+    o << "Valor: R$ " << std::fixed << moviment.valor << endl <<
          "Data da Transação: " /*<< moviment.dataTransacao */<< endl;
          moviment.dataTransacao->imprimeData();
     return o;

@@ -14,8 +14,8 @@ using std::string;
 class Data{
     private:
         int dia, mes, ano, horas, minutos, segundos, diaSemana;
-        string mesExtenso[12] = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-        string diaExtenso[7] = { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" };
+        string mesExtenso[12] = { "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro" };
+        string diaExtenso[7] = { "Domingo", "Segundo", "Terça", "Quarta", "Quinta", "Sexta", "Sábado" };
         
         void capturaTempo( int &dia, int &mes, int &ano, int &horas, int &minutos, int &segundos, int &diaSemana );
 
@@ -70,5 +70,6 @@ class Data{
 
         string getMesExtenso(int mes);
         string getDiaExtenso(int dia);
+
 };
 #endif
