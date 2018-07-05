@@ -17,6 +17,8 @@ typedef struct{
     Data dataTransacao;
 }movimentacao;
 
+//namespace cbancaria{
+
 class Conta{
     private:
         static int contDeConta;
@@ -36,11 +38,6 @@ class Conta{
         Conta();
         Conta( Conta & );
         ~Conta();
-
-        string converteOperacao( int op );
-
-        void aumentaLimite( double );
-        void diminuiLimite( double );
 
         void adicionarMovimentacao( Movimentacao mov );
 
@@ -74,5 +71,7 @@ class Conta{
 
         friend bool operator== (Conta& a, Conta& b);
 };
+
+//}
 
 #endif

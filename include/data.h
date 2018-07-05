@@ -9,6 +9,9 @@ using std::string;
 #include <cstring>
 #include <iomanip>
 
+
+//namespace cbancaria{
+
 //Classe Data
 //Define os atributos e métodos de uma Data
 class Data{
@@ -22,6 +25,8 @@ class Data{
     public:
         //Construtor padrão da classe Data
         Data();
+
+        Data( Data& );
 
         //Destrutor padrão da classe Data
         ~Data();
@@ -72,4 +77,6 @@ class Data{
         string getDiaExtenso(int dia);
 
 };
+
+//}
 #endif

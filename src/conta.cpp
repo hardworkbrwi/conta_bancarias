@@ -21,7 +21,12 @@ using std::string;
                     this->conta = std::to_string( contDeConta );
     }
 
-    Conta::Conta(){}
+    Conta::Conta(){
+        this->saldo = 0;
+        this->limite = 0;
+        Conta::contDeConta++;
+        this->conta = std::to_string( contDeConta );
+    }
 
     Conta::Conta( Conta& c ){
         this->agencia = c.getAgencia();
@@ -34,31 +39,6 @@ using std::string;
     }
 
     Conta::~Conta(){}
-
-    string Conta::converteOperacao( int op ){
-        switch( op ){
-            case 1:
-                return "SAQUE";
-                break;
-            case 2:
-                return "TRANSFERÊNCIA";
-                break;
-            case 3:
-                return "DEPÓSITO";
-                break;
-            default:
-                return "OPERACÃO INVÁLIDA";
-                break;
-        }
-    }
-
-    void Conta::aumentaLimite( double valor ){
-        this->limite += valor;
-    }
-
-    void Conta::diminuiLimite( double valor ){
-        this->limite -= valor;
-    }
 
     void Conta::adicionarMovimentacao( Movimentacao mov ){
         this->movimentacoes.insereNoInicio( mov );
@@ -150,3 +130,5 @@ using std::string;
         
         return o;
     }
+
+//}

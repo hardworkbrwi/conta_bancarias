@@ -16,9 +16,13 @@ using std::shared_ptr;
 #include "conta.h"
 #include "excecoes.h"
  */
+
+//namespace cbancaria{
+
 class Movimentacao{
     private:
         string tipo;
+        string origem;
         double valor;
         shared_ptr<Data> dataTransacao;
        
@@ -29,6 +33,8 @@ class Movimentacao{
 
         string getTipo();
         void setTipo( string );
+        string getOrigem();
+        void setOrigem( string );
         double getValor();
         void setValor( double );
         shared_ptr<Data> getData();
@@ -37,4 +43,5 @@ class Movimentacao{
         friend std::ostream& operator<< (std::ostream &o, Movimentacao const mov);
 };
 
+//}
 #endif

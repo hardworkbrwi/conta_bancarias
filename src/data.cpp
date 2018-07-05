@@ -1,3 +1,5 @@
+//namespace cbancaria{
+
 //sessão de inclusão de libs
 #include "data.h"
 
@@ -5,6 +7,17 @@
 Data::Data(){
     capturaTempo(dia, mes, ano, horas, minutos, segundos, diaSemana);
 }
+
+Data::Data( Data& data ){
+    this->dia = data.getDia();
+    this->mes = data.getMes();
+    this->ano = data.getAno();
+    this->horas = data.getHoras();
+    this->minutos = data.getMinutos();
+    this->segundos = data.getSegundos();
+    this->diaSemana = data.getDiaSemana();
+}
+
 //Destrutor padrão da classe Data
 Data::~Data(){}
 
@@ -56,14 +69,12 @@ std::istream& operator>> (std::istream &i, Data &d){
 std::ostream& operator<< (std::ostream &o, Data d){
     //o << d.DataPorExtenso();
     //o << d.imprimeData();
-    o << d.getDia();
-/* 
-    o << "Date: " << d.getDiaExtenso[d.getDiaSemana()] << ", " << d.getDia() << " " << d.getMesExtenso[d.getMes()]
+    //o << d.getDia();
+    o << "Data: " << d.getDiaExtenso(d.getDiaSemana()) << ", " << d.getDia() << " " << d.getMesExtenso(d.getMes())
     << " " << d.getAno() << std::endl;
 
     #define SP << std::setfill( '0' ) << std::setw( 2 ) <<
-    o << "Time: " SP d.getHoras() << ":" SP d.getMinutos() << "." SP d.getSegundos() << std::endl;
- */
+    o << "Hora: " SP d.getHoras() << ":" SP d.getMinutos() << "." SP d.getSegundos() << std::endl;
     return o;
 }
 
@@ -160,11 +171,11 @@ std::string Data::DataPorExtenso() {
 }
 
 void Data::imprimeData(){
-    std::cout << "Date: " << diaExtenso[diaSemana] << ", " << dia << " " << mesExtenso[mes]
+    std::cout << "Data: " << diaExtenso[diaSemana] << ", " << dia << " " << mesExtenso[mes]
     << " " << ano << std::endl;
 
     #define SP << std::setfill( '0' ) << std::setw( 2 ) <<
-    std::cout << "Time: " SP this->horas << ":" SP this->minutos << "." SP this->segundos << std::endl;
+    std::cout << "Hora: " SP this->horas << ":" SP this->minutos << "." SP this->segundos << std::endl;
 }
 
 //Sessão de Encapsulamento
@@ -232,3 +243,5 @@ string Data::getMesExtenso( int mes ){
 string Data::getDiaExtenso( int dia ){
     return diaExtenso[dia];
 }
+
+//}

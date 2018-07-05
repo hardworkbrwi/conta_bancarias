@@ -1,5 +1,54 @@
 #include "operacao_conta.h"
 
+//namespace cbancaria{
+
+bool OperacaoConta::ArmazenarContas( vector<Conta> c ){
+    std::ofstream arqCadastro("Base de contas.txt", std::ios::app);
+    try{
+        if( arqCadastro.is_open() ){
+            for(auto it = c.begin(); it != c.end(); it++){
+                arqCadastro << it->getAgencia();
+                arqCadastro << it->getConta();
+                arqCadastro << std::to_string( it->getTipo() );
+                arqCadastro << it->getTitular();
+                arqCadastro << std::to_string( it->getSaldo() );
+                arqCadastro << std::to_string( it->getLimite() );
+                arqCadastro << TAGMOV;
+                for( int i = 0; i < it->getMovimentacao().getTamanho(); i++){
+                    arqCadastro << it->getMovimentacao().getElemento(i).getTipo();
+                    arqCadastro << it->getMovimentacao().getElemento(i).getOrigem();
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getValor() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getDia() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getMes() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getAno() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getHoras() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getMinutos() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getSegundos() );
+                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getDiaSemana() );
+                }
+                
+                arqCadastro << TAGCONTA;
+            }
+
+            return true;        
+        }else{
+            throw Excecoes();
+            return false;
+        }
+    }catch( Excecoes &ex){
+        std::cerr << ex.what() << std::endl;
+        return false;
+    }catch( ... ){
+        std::cerr << "Erro desconhecido para a operacao de SAQUE!" << std::endl;
+        return false;
+    }
+}
+
+shared_ptr<Conta> OperacaoConta::CriarContas( string agencia, string titular, int tipoConta, double limite ){
+    Conta c( agencia, tipoConta, titular, limite );
+    return std::make_shared<Conta> ( c );
+}
+
 bool OperacaoConta::saque( Conta &conta, double valor){
     try{
         if( conta.getSaldo() < valor ) throw Excecoes();
@@ -56,10 +105,27 @@ bool OperacaoConta::deposito( Conta &conta, double valor ){
 
 bool OperacaoConta::transferencia( Conta &contaA, Conta &contaB, double valor ){
     try{
-        if( !(saque( contaA, valor )) && !(deposito( contaB, valor )) ) throw Excecoes();
+        if( contaA.getSaldo() < valor || contaB.getSaldo() + valor > contaB.getLimite() ) throw Excecoes();
         else{
-            saque( contaA, valor );
-            deposito( contaB, valor );
+            //Bloco Conta A
+            Movimentacao mov;
+            mov.setTipo( "TRANSFERÊNCIA" );
+            mov.setOrigem( contaA.getTitular() );
+            mov.setValor( valor );
+            
+            contaA.setSaldo( contaA.getSaldo() - valor );
+
+            Data d;
+            mov.setData( std::make_shared<Data> ( d ) );
+
+            contaA.adicionarMovimentacao( mov );
+
+            //Bloco conta B            
+            contaB.setSaldo( contaB.getSaldo() + valor );
+
+            contaB.adicionarMovimentacao( mov );
+
+            return true;
         }
     }catch( Excecoes &ex ){
         //ex.lancaMsg( "SALDO EM CONTA INSULFICIENTE!" );
@@ -142,6 +208,69 @@ string OperacaoConta::conversaoOperacoes( int op ){
             break;
     }
 }
+
+void OperacaoConta::exibeSaldo( Conta &conta ){
+    Data d;
+    int op;
+    //int tipo;
+    cout << "1 << MOSTRA EM TELA" << endl
+         << "2 << IMPRIME EM ARQUIVO" << endl;
+    cin >> op;
+    cin.ignore();
+    if(op == 1){
+        cout << "########## SALDO ##########" << endl
+                << "Agência: " << conta.getAgencia() << endl
+                << "Conta: " << conta.getConta() << endl
+                << "Titular: " << conta.getTitular() << endl;
+                d.imprimeData();
+        cout << "Saldo Atual: " << conta.getSaldo() << endl
+                << "########## Fim do Saldo ##########" << endl;
+    }else{
+        //std::ofstream arqSaida("Saldo_"+conta.getTitular()+".txt", std::ios::trunc);
+        //arqSaida.open();
+        std::ofstream arqSaida("teste.txt");
+        //arqSaida.open();
+
+        if(arqSaida.is_open()){
+            cout << "Arquivo criado!" << endl;
+
+            arqSaida << "########## SALDO ##########" << endl
+                    << "Agência: " << conta.getAgencia() << endl
+                    << "Conta: " << conta.getConta() << endl
+                    << "Titular: " << conta.getTitular() << endl
+                    << d << endl
+                    << "Saldo Atual: " << conta.getSaldo() << endl
+                    << "########## Fim do Saldo ##########" << endl;
+
+            arqSaida.close();
+        }else{
+            cout << "Erro ao tentar abrir o arquivo" << endl;
+        }
+
+    }
+}
+
+void OperacaoConta::exibeExtrato( Conta &conta, int periodo = 5 ){
+    Data d;
+    //(diaAtual - periodo)mod30
+    int dataPeriodo = ( d.getDia() - periodo ) % 30;
+    Movimentacao mov;
+
+    cout << "########## EXTRATO ##########" << endl
+         << "Agência: " << conta.getAgencia() << endl
+         << "Conta: " << conta.getConta() << endl
+         << "Titular: " << conta.getTitular() << endl;
+         d.imprimeData();
+    cout << "Saldo Atual: " << conta.getSaldo() << endl << endl;    
+    
+    for(int i = 0; i < conta.getMovimentacao().getTamanho(); i++){
+        mov = conta.getMovimentacao().getElemento(i);
+        if( mov.getData()->getDia() >= dataPeriodo ){
+            cout << mov << endl;
+        }
+    }
+    cout << "########## Fim do Extrato ##########" << endl;
+}
 /*
 std::ostream& operator<< (std::ostream &o, Movimentacao const moviment){
     o << "Tipo:              " << moviment.mov.tipo << endl <<
@@ -149,3 +278,5 @@ std::ostream& operator<< (std::ostream &o, Movimentacao const moviment){
     return o;
 }
 */
+
+//}
