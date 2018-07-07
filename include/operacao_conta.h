@@ -26,7 +26,8 @@ class OperacaoConta{
     private:
         string conversaoOperacoes( int );
     public:
-        static bool ArmazenarContas( vector<Conta> );
+        static bool leBancoDeDados( string nomeArquivo );
+        static bool armazenarContas( vector<shared_ptr<Conta>> );
         static shared_ptr<Conta> CriarContas( string agencia, string titular, int tipoConta, double limite );
         static bool saque( Conta &, double );
         static bool deposito( Conta &, double );

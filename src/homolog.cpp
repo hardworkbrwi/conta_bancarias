@@ -41,51 +41,54 @@ int main(){
     
     Conta *c5 = new Conta("1", 3, "Willian", 10000);
     //c5->setTitular("Willian");
-    list<std::shared_ptr<Conta>> contas;
+    vector<std::shared_ptr<Conta>> contas;
     cout << (*c5);
     contas.push_back(std::make_shared<Conta>(c1));
     contas.push_back(std::make_shared<Conta>(*c5));
     contas.push_back(std::make_shared<Conta>(c3));
     contas.push_back(std::make_shared<Conta>(c4));
     contas.push_back(std::make_shared<Conta>(c2));
+    //OperacaoConta::armazenarContas( contas );
     
     for( auto it = contas.begin(); it != contas.end(); it++){
         cout << (*it)->getSaldo() << endl;
     }
     
     //cout << c1;
-    cout << "Saldo em conta: R$ " << c1.getSaldo() << endl;
-    OperacaoConta::saque( c1, 350.58 );
-    OperacaoConta::deposito( c1, 558.68 );
-    cout << "Saldo em conta: R$ " << c1.getSaldo() << endl;
-    OperacaoConta::saque( c1, 350.58 );
-    OperacaoConta::deposito( c1, 9960.67 );
-    cout << "Saldo em conta: R$ " << c1.getSaldo() << endl;
-    cout << c1;
-    OperacaoConta::deposito( c2, 558.68 );
-    cout << c2.getSaldo() << endl;
+    cout << "Saldo em conta: R$ " << contas[0]->getSaldo() << endl;
+    OperacaoConta::saque( *contas[0], 350.58 );
+    OperacaoConta::deposito( *contas[0], 558.68 );
+    cout << "Saldo em conta: R$ " << contas[0]->getSaldo() << endl;
+    OperacaoConta::saque( *contas[0], 350.58 );
+    OperacaoConta::deposito( *contas[0], 9960.67 );
+    cout << "Saldo em conta: R$ " << contas[0]->getSaldo() << endl;
+    cout << *contas[0];
+    OperacaoConta::deposito( *contas[4], 558.68 );
+    cout << contas[4]->getSaldo() << endl;
 
-    OperacaoConta::transferencia( c2, c1, 256.34 );
+    OperacaoConta::transferencia( *contas[4], *contas[0], 256.34 );
 
     cout << endl;
-    c1.getMovimentacao().imprimir();
-    c2.getMovimentacao().imprimir();
+    contas[0]->getMovimentacao().imprimir();
+    contas[4]->getMovimentacao().imprimir();
 
-    OperacaoConta::alteraLimite( c1 );
-    cout << c1;
+    OperacaoConta::alteraLimite( *contas[0] );
+    cout << *contas[0];
 
-    OperacaoConta::alteraTipoConta( c1 );
+    OperacaoConta::alteraTipoConta( *contas[0] );
     cout << endl;
 
-    c1.exibirExtrato(5);
+    contas[0]->exibirExtrato(5);
 
-    cout << c2.getSaldo();
+    cout << contas[4]->getSaldo();
 
-    OperacaoConta::exibeExtrato( c2, 5 );
+    OperacaoConta::exibeExtrato( *contas[4], 5 );
 
-    OperacaoConta::exibeExtrato( c1, 5 );
+    OperacaoConta::exibeExtrato( *contas[0], 5 );
 
-    OperacaoConta::exibeSaldo( c2 );
+    OperacaoConta::exibeSaldo( *contas[4] );
+
+    OperacaoConta::armazenarContas( contas );
     //list<std::shared_ptr<Conta>> contas;
     //contas.push_back(c1);
     //contas.push_back(c1);
@@ -103,7 +106,7 @@ int main(){
     contas.push_back(c4);
  */    /* 
     for(int i = 0; i < (int)contas.size(); i++){
-        cout << contas[i] << endl;
+        cout << *contas[i] << endl;
     }
  */
 

@@ -2,32 +2,81 @@
 
 //namespace cbancaria{
 
-bool OperacaoConta::ArmazenarContas( vector<Conta> c ){
+template<typename TContainer>
+void print_elements(const TContainer& collection, const char* label="",
+const char separator=' '){
+    std::cout << label;
+    for( auto it = collection.begin(); it != collection.end(); it++  ){
+        std::cout << (*it) << separator;
+    }
+    std::cout << std::endl;
+}
+
+bool OperacaoConta::leBancoDeDados( string nomeArquivo ){
+    std::ifstream bancoDados( nomeArquivo );
+    const char separador = ';';
+    string str, agencia, conta, titular, saldo, tipoConta, limite, tipoMov, origem, valor, dia, mes, ano, horas, minutos, segundos, diasemana;
+
+    vector<std::shared_ptr<Conta>> contas;
+
+    try{
+        if( bancoDados.is_open() ){
+            while( !bancoDados.eof() ){
+                while( str != "->" ){
+                    std::getline(cin, str, separador);
+                    agencia = str;
+                    std::getline(cin, str, separador);
+                    conta = str;
+                    std::getline(cin, str, separador);
+                    tipoConta = str;
+                    std::getline(cin, str, separador);
+                    titular = str;
+                    std::getline(cin, str, separador);
+                    saldo = str;
+                    std::getline(cin, str, separador);
+                    limite = str;
+                    Conta * c = new Conta( agencia, std::stoi(tipoConta), titular, std::stod(limite) );
+                    contas.push_back(std::make_shared<Conta>(*c));
+                }
+            }
+
+            return true;
+
+
+        }else{
+            throw Excecoes();
+            return false;
+        }
+    }catch( Excecoes &ex ){ return false; }
+}
+
+bool OperacaoConta::armazenarContas( vector<shared_ptr<Conta>> c ){
     std::ofstream arqCadastro("Base de contas.txt", std::ios::app);
+    const char separador = ';';
     try{
         if( arqCadastro.is_open() ){
             for(auto it = c.begin(); it != c.end(); it++){
-                arqCadastro << it->getAgencia();
-                arqCadastro << it->getConta();
-                arqCadastro << std::to_string( it->getTipo() );
-                arqCadastro << it->getTitular();
-                arqCadastro << std::to_string( it->getSaldo() );
-                arqCadastro << std::to_string( it->getLimite() );
+                arqCadastro << (*it)->getAgencia() << separador;
+                arqCadastro << (*it)->getConta() << separador;
+                arqCadastro << std::to_string( (*it)->getTipo() ) << separador;
+                arqCadastro << (*it)->getTitular() << separador;
+                arqCadastro << std::to_string( (*it)->getSaldo() ) << separador;
+                arqCadastro << std::to_string( (*it)->getLimite() ) << separador;
                 arqCadastro << TAGMOV;
-                for( int i = 0; i < it->getMovimentacao().getTamanho(); i++){
-                    arqCadastro << it->getMovimentacao().getElemento(i).getTipo();
-                    arqCadastro << it->getMovimentacao().getElemento(i).getOrigem();
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getValor() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getDia() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getMes() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getAno() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getHoras() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getMinutos() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getSegundos() );
-                    arqCadastro << std::to_string( it->getMovimentacao().getElemento(i).getData()->getDiaSemana() );
+                for( int i = 0; i < (*it)->getMovimentacao().getTamanho(); i++){
+                    arqCadastro << (*it)->getMovimentacao().getElemento(i).getTipo() << separador;
+                    arqCadastro << (*it)->getMovimentacao().getElemento(i).getOrigem() << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getValor() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getDia() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getMes() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getAno() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getHoras() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getMinutos() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getSegundos() ) << separador;
+                    arqCadastro << std::to_string( (*it)->getMovimentacao().getElemento(i).getData()->getDiaSemana() ) << separador;
                 }
                 
-                arqCadastro << TAGCONTA;
+                arqCadastro << TAGCONTA << endl;
             }
 
             return true;        
